@@ -1,0 +1,31 @@
+{
+  "generator-sap-partner-eng": {
+    "package_version": "0.3.11",
+    "project_name": "socketchat",
+    "app_name": "chat",
+    "app_desc": "Simple Chat over Websockets",
+    "router_name": "chat-app",
+    "domain_name": "cfapps.us10.hana.ondemand.com",
+    "router_path": "app",
+    "database_path": "db",
+    "services_path": "srv",
+    "uaa_res_name": "chat-uaa",
+    "uaa_svc_name": "CHAT_UAA",
+    "module_names": [
+      "chat-srv"
+    ],
+    "module_paths": [
+      "srv-chat"
+    ],
+    "module_apis": [
+      "chat_api"
+    ],
+    "module_bes": [
+      "chat_be"
+    ],
+    "module_routes": [
+      "chat"
+    ],
+    "multitenant_enabled": false
+  }
+}
