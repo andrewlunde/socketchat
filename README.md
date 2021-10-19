@@ -1,26 +1,29 @@
 # chat Application
 
-Welcome to the chat project.
+Welcome to the chat project built using websockets.
 
 It contains these folders and files.
 
 File / Folder | Purpose
 ---------|----------
-`README.md` | this getting started guide
-`srv/` | your service models and code go here
-`mta.yaml` | project structure and relationships
+`Dockerfile` | Docker build steps
+`Makerfile` | Use make to build and publish the Docker image
+`NOTES.md` | Building testing Docker image and deploying to BTP Kyma
+`README.md` | Building mtar file and deploying to BTP Cloud Foundry
+`srv/` | NodeJS websocket server and client in server.js
+`mta.yaml` | Multi-Target-Architecture file for BTP Cloud Foundry
 
 
 ## Next Steps...
 
 ## Learn more...
 
-# Build Command:
+# Build Command for BTP CF:
 ```
 cd socketchat ; mkdir -p mta_archives ; mbt build -p=cf -t=mta_archives --mtar=chat.mtar
 ```
 
-# Deploy Command:
+# BTP CF Deploy Command:
 ```
 cf deploy mta_archives/chat.mtar -f
 ```
@@ -30,7 +33,7 @@ cf deploy mta_archives/chat.mtar -f
 mbt build -p=cf -t=mta_archives --mtar=chat.mtar ; cf deploy mta_archives/chat.mtar -f
 ```
 
-# Undeploy Command:
+# BTP CF Undeploy Command:
 ```
 cf undeploy chat -f --delete-services
 ```
