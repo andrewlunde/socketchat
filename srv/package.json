@@ -12,8 +12,7 @@
   "main": "server.js",
   "name": "nodejs",
   "scripts": {
-    "xstart": "nodemon server.js",
-    "start": "nodemon wsserver.js"
+    "start": "nodemon server.js"
   },
   "version": "1.0.0"
 }

@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: socketchat
+  labels:
+    app: socketchat
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: socketchat
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: socketchat
+        version: v1
+    spec:
+      containers:
+      - name: socketchat
+        image: alunde/socketchat:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DEBUG
+          value: "yes"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: socketchat
+  labels:
+    app: socketchat
+    service: socketchat
+spec:
+  ports:
+  - port: 8080
+    name: http
+  selector:
+    app: socketchat
+---
+apiVersion: gateway.kyma-project.io/v1alpha1
+kind: APIRule
+metadata:
+  labels:
+    app: socketchat
+  name: socketchat
+spec:
+  service:
+    host: socketchat
+    name: socketchat
+    port: 8080
+  gateway: kyma-gateway.kyma-system.svc.cluster.local
+  rules:
+    - path: /.*
+      methods: ["GET", "PUT", "POST", "HEAD", "PATCH", "DELETE" ]
+      accessStrategies:
+        - handler: noop
+      mutators: []

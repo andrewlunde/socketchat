@@ -2,12 +2,11 @@
 
 Welcome to the chat project.
 
-It contains these folders and files, following the CAP recommended project layout:
+It contains these folders and files.
 
 File / Folder | Purpose
 ---------|----------
 `README.md` | this getting started guide
-`app/` | content for UI frontends go here
 `srv/` | your service models and code go here
 `mta.yaml` | project structure and relationships
 
