@@ -1,50 +1,16 @@
 const express = require('express');
 const ws = require('ws');
+// const thetajs = require('@thetalabs/theta-js');
+// const ThetaWalletConnect = require("@thetalabs/theta-wallet-connect");
 
 var port = process.env.PORT || 8080;
 
 const app = express();
 
-app.get("/", function (req, res) {
-	
-    var respStr =
-`<!DOCTYPE html>
-<html lang="en" dir="ltr">
-    <head>
-    <meta charset="utf-8" />
-    <title>Web Socket Demo</title>
-    </head>
-    <body>
+app.use(express.static('static'));
 
-    <textarea rows="1" cols="80" id="nick"></textarea>
-
-    <form>
-        <textarea rows="8" cols="80" id="message"></textarea>
-        <br />
-        <button type="submit">Send</button>
-    </form>
-
-    <ul id="chat"></ul>
-
-    <script src="main.js">
-
-    </script>
-<p id="demo"></p>
-
-<button onclick="clearInterval(myVar)">Stop time</button>
-
-<script>
-let myVar = setInterval(myTimer ,1000);
-function myTimer() {
-    const d = new Date();
-    document.getElementById("demo").innerHTML = d.toLocaleTimeString();
-}
-</script>
-    </body>
-</html>`;
-
-	res.status(200).send(respStr);
-});
+// app.get("/", function (req, res) {
+// });
 
 // to change icon
 // make an icon maybe here: http://www.favicon.cc/ or here :http://favicon-generator.org
@@ -102,7 +68,13 @@ app.get("/main.js", function (req, res) {
 	console.log("chatServerURL: " + chatServerURL);
     
     var respStr =
-`const connection = new WebSocket("` + chatServerURL + `");
+`
+var connection = null;
+
+function reconnect() {
+
+connection = new WebSocket("` + chatServerURL + `");
+
 connection.onopen = () => {
     console.log("connected");
 };
@@ -117,9 +89,12 @@ connection.onerror = error => {
 
 connection.onmessage = event => {
     console.log("received", event.data);
-    let li = document.createElement("li");
-    li.innerText = event.data;
-    document.querySelector("#chat").append(li);
+    // let li = document.createElement("li");
+    // li.innerText = event.data;
+    // document.querySelector("#chat").append(li);
+    var logger = document.querySelector("#logger");
+    logger.innerHTML = logger.innerHTML + ` + '"\\n"' + ` + event.data;
+    logger.scrollTop = logger.scrollHeight;
 };
 
 document.querySelector("form").addEventListener("submit", event => {
@@ -128,10 +103,128 @@ document.querySelector("form").addEventListener("submit", event => {
     let message = document.querySelector("#message").value;
     connection.send(nick + ":" + message);
     document.querySelector("#message").value = "";
-});`;
+});
+
+document.getElementById('reconnect').style.visibility = 'hidden';
+document.getElementById('disconnect').style.visibility = 'visible';
+};
+
+function disconnect() {
+    console.log("disconnecting...");
+    connection.close();
+    document.getElementById('reconnect').style.visibility = 'visible';
+    document.getElementById('disconnect').style.visibility = 'hidden';
+};
+
+document.getElementById('message').onkeydown = function(e){
+    if(e.keyCode == 13){
+        //console.log("enter key...");
+        // let addr = document.querySelector("#addr").value;
+        // let message = document.querySelector("#message").value;
+        // connection.send(nick + ":" + message);
+        // document.querySelector("#message").value = "";
+    } else {
+        //console.log("other key...");
+    }
+ };
+
+reconnect();
+`;
 	
 	res.status(200).send(respStr);
 });
+
+// app.get("/trustee/create-wallet", async function (req, res) {
+
+// 	var responseStr = "";
+// 	responseStr += "<!DOCTYPE HTML><html><head><title>ThetaTrustee</title></head><body><h1>theta-trustee</h1><br />";
+// 	responseStr += "<a href=\"/trustee/links\">Back to Links page.</a><br />";
+
+// 	responseStr += "<pre>\n";
+
+// 	// https://docs.thetatoken.org/docs/theta-js-sdk-signers#create-a-random-wallet
+// 	try {
+// 		// const wallet = thetajs.Wallet.createRandom();
+// 		// head -c 32 /dev/urandom|xxd -ps -c 32
+// 		// const privateKey = '0xcd44a249339e35bed97d74f4a0310d624071583639f2cb72848acbee43bdfbc7';
+// 		const privateKey = "0x" + crypto.randomBytes(32).toString('hex');
+// 		//console.log(privateKey);
+// 		responseStr += "privateKey: " + privateKey + "\n";
+// 		const wallet = new Wallet(privateKey);
+// 		var connectedWallet = wallet.connect(provider);
+// 		responseStr += JSON.stringify(wallet,null,2) + "\n";
+// 		responseStr += JSON.stringify(connectedWallet,null,2) + "\n";
+// 	} catch (e) {
+// 		console.error(e);
+// 		responseStr += JSON.stringify(e,null,2) + "\n";
+// 	}
+
+// 	responseStr += "</pre>\n";
+	
+// 	responseStr += "<a href=\"/\">Return to home page.</a><br />";
+// 	responseStr += "</body></html>";
+// 	res.status(200).send(responseStr);
+// });
+
+// app.get("/trustee/request-accounts", async function (req, res) {
+
+// 	var responseStr = "";
+// 	responseStr += "<!DOCTYPE HTML><html><head><title>ThetaTrustee</title></head><body><h1>theta-trustee</h1><br />";
+// 	responseStr += "<a href=\"/trustee/links\">Back to Links page.</a><br />";
+
+// 	responseStr += "<pre>\n";
+
+// 	// https://docs.thetatoken.org/docs/browser-extension-wallet-developer-guide#request-accounts
+// 	try {
+// 		const accounts = await ThetaWalletConnect.requestAccounts();
+// 		responseStr += JSON.stringify(accounts,null,2) + "\n";
+// 	} catch (e) {
+// 		console.error(e);
+// 		responseStr += JSON.stringify(e,null,2) + "\n";
+// 	}
+
+// 	responseStr += "</pre>\n";
+	
+// 	responseStr += "<a href=\"/\">Return to home page.</a><br />";
+// 	responseStr += "</body></html>";
+// 	res.status(200).send(responseStr);
+// });
+
+// app.get("/trustee/request-payment", async function (req, res) {
+
+// 	var responseStr = "";
+// 	responseStr += "<!DOCTYPE HTML><html><head><title>ThetaTrustee</title></head><body><h1>theta-trustee</h1><br />";
+// 	responseStr += "<a href=\"/trustee/links\">Back to Links page.</a><br />";
+
+// 	responseStr += "<pre>\n";
+
+// 	const ten18 = (new BigNumber(10)).pow(18); 
+// 	const thetaWeiToSend = (new BigNumber(0));
+// 	const tfuelWeiToSend = (new BigNumber(10)).multipliedBy(ten18);
+// 	const receiverAddr = Bob; // Your address
+// 	const txData = {
+// 		  outputs: [
+// 			{
+// 			  address: receiverAddr,
+// 			  thetaWei: thetaWeiToSend,
+// 			  tfuelWei: tfuelWeiToSend,
+// 			}
+// 		  ]
+// 		};
+	
+// 	let tx = new thetajs.transactions.SendTransaction(txData);
+// 	const txResult = await ThetaWalletConnect.sendTransaction(tx);
+// 	const hash = txResult.hash;
+
+// 	responseStr += JSON.stringify(hash,null,2) + "\n";
+
+// 	responseStr += "</pre>\n";
+	
+// 	responseStr += "<a href=\"/\">Return to home page.</a><br />";
+// 	responseStr += "</body></html>";
+// 	res.status(200).send(responseStr);
+// });
+
 
 // Set up a headless websocket server that prints any
 // events that come in.
@@ -216,7 +309,7 @@ function broadcast(data) {
     });
 }
   
-let myVar = setInterval(myTimer, (30 * 1000));
+let myVar = setInterval(myTimer, (10 * 1000));
 function myTimer() {
     const d = new Date();
     broadcast("SYS: " + d.toLocaleTimeString());

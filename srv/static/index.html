@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+    <meta charset="utf-8" />
+    <title>Web Socket Demo</title>
+    </head>
+    <body style="font-family: Tahoma, Geneva, sans-serif">
+    <!-- <button id="onboard">Loading...</button> <div id="chainlist" style="display: inline">Add a Theta network to your MetaMask with <a href="https://chainlist.org/?search=theta" target="chainlist">ChainList</a></div><br /> -->
+    <!-- <textarea rows="1" cols="80" id="nick"></textarea> -->
+    Nickname: <input type="text" id="nick" size="12" style="font-family: monospace" onInput="showCurrentValue(event)" /> Address: <input type="text" id="addr" size="42" style="font-family: monospace" />
+    <!-- <input cols="80" id="nick"></input> -->
+    <form id="chatform">
+        <textarea rows="1" cols="80" id="message"></textarea>
+        <br />
+        <button type="submit">Send</button>
+        <br />
+        <textarea rows="5" cols="80" id="logger"></textarea>
+        <br />
+    </form>
+
+
+    <p id="demo"></p>
+
+    <button onclick="myVar = setInterval(myTimer ,1000)">Start Timer</button>
+    <button onclick="clearInterval(myVar)">Stop Timer</button>
+    <button id="disconnect" onclick="disconnect()">Disconnect</button>
+    <button id="reconnect" onclick="reconnect()" style="visibility: hidden">Connect</button>
+
+    <ul id="chat"></ul>
+
+    <script src="main.js"></script>
+    <script src="common.js"></script>
+
+    <!-- <script src="metamask-onboarding.bundle.js"></script> -->
+    <!-- <script src="metamask-onboarding.js"></script> -->
+    <!-- <script>updateButton();</script> -->
+
+    </body>
+</html>

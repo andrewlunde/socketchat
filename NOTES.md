@@ -25,3 +25,12 @@ kubectl logs -n dev -f $(kubectl get pods -n dev -l app=socketchat -o jsonpath='
 ```
 kubectl delete -n dev -f deployment.yaml
 ```
+
+// Disable metamask stuff for now
+// https://docs.ethers.io/v5/getting-started/
+  "devDependencies": {
+    "@thetalabs/theta-js": "https://github.com/andrewlunde/theta-js",
+    "@thetalabs/theta-wallet-connect": "latest",
+    "@metamask/onboarding": "latest",
+    "nodemon": "latest"
+  },

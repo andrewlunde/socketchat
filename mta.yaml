@@ -19,7 +19,7 @@ modules:
 
 ### New Modules Here ###
 
-# cf push chat-srv -p srv -n chat-srv -d cfapps.us10.hana.ondemand.com -k 128M -m 128M -b nodejs_buildpack -u none
+# cf push chat-srv -p srv -n chat-srv -d cfapps.us10.hana.ondemand.com -k 256M -m 128M -b nodejs_buildpack -u none
  - name: chat-srv
    type: nodejs
    path: srv
@@ -28,7 +28,7 @@ modules:
    parameters:
       buildpack: nodejs_buildpack
       memory: 128M
-      disk-quota: 128M
+      disk-quota: 256M
       #host: chat-srv
       host: ${org}-${space}-chat
       #domain: cfapps.us10.hana.ondemand.com
