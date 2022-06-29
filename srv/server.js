@@ -12,6 +12,9 @@ app.use(express.static('static'));
 // app.get("/", function (req, res) {
 // });
 
+
+
+
 // to change icon
 // make an icon maybe here: http://www.favicon.cc/ or here :http://favicon-generator.org
 // convert it to base64 maybe here: http://base64converter.com/
@@ -92,9 +95,20 @@ connection.onmessage = event => {
     // let li = document.createElement("li");
     // li.innerText = event.data;
     // document.querySelector("#chat").append(li);
-    var logger = document.querySelector("#logger");
-    logger.innerHTML = logger.innerHTML + ` + '"\\n"' + ` + event.data;
-    logger.scrollTop = logger.scrollHeight;
+    let nick = document.querySelector("#nick").value;
+    if (event.data.substring(2,7) == ":INV:") {
+        if (event.data.substring(0,2) == nick) {
+            alert("Invoice Sent!");
+        } else {
+            var invoice = event.data.substring(7);
+            document.getElementById("invoice").innerHTML = invoice;
+        }
+    } else {
+        var logger = document.querySelector("#logger");
+        logger.innerHTML = logger.innerHTML + ` + '"\\n"' + ` + event.data;
+        logger.scrollTop = logger.scrollHeight;
+    }
+
 };
 
 document.querySelector("form").addEventListener("submit", event => {

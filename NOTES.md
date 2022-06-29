@@ -34,3 +34,9 @@ kubectl delete -n dev -f deployment.yaml
     "@metamask/onboarding": "latest",
     "nodemon": "latest"
   },
+
+
+Market Rates Bring Your Own Rates Application
+
+https://cryptorates.mrm.cfapps.us10.hana.ondemand.com/portal.portal/site#Shell-home
+
