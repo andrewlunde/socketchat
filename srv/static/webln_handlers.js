@@ -57,8 +57,9 @@ async function asyncLN04(req, res) {
     try {
         const webln = await WebLN.requestProvider();
         document.getElementById("webln").innerHTML = "Got reqProv...";
-        let nick = document.querySelector("#nick").value;
-        let invoice = document.getElementById("invoice").innerHTML;
+        // let nick = document.querySelector("#nick").value;
+        // let invoice = document.getElementById("invoice").innerHTML;
+        let invoice = document.querySelector("#invoice").value;
         if (invoice.length > 0) {
             document.getElementById("webln").innerHTML = "Send Payment.";
             const preimage = await webln.sendPayment(invoice);
@@ -77,4 +78,67 @@ async function asyncLN04(req, res) {
 function testLN04() {
     document.getElementById("webln").innerHTML = "TestLN04";
     asyncLN04(null, null);
+};
+
+async function asyncLN05(req, res) {
+    document.getElementById("webln").innerHTML = "Starting...";
+    try {
+        const webln = await WebLN.requestProvider();
+        document.getElementById("webln").innerHTML = "Got reqProv...";
+        let message = document.querySelector("#message").value;
+        if (message.length > 0) {
+            document.getElementById("webln").innerHTML = "Sign Message.";
+            const response = await webln.signMessage(message);
+            let invoice = document.querySelector("#invoice");
+            invoice.value = response.signature;
+            console.log("Message: " + response.message);
+            console.log("Signature: " + response.signature);
+        } else {
+            document.getElementById("webln").innerHTML = "No Message.";
+        }
+      }
+      catch(err) {
+        // Tell the user what went wrong
+        console.log(err.message);
+        document.getElementById("webln").innerHTML = err.message;
+    }
+};
+
+function testLN05() {
+    document.getElementById("webln").innerHTML = "TestLN05";
+    asyncLN05(null, null);
+};
+
+async function asyncLN06(req, res) {
+    document.getElementById("webln").innerHTML = "Starting...";
+    try {
+        const webln = await WebLN.requestProvider();
+        document.getElementById("webln").innerHTML = "Got reqProv...";
+        let message = document.querySelector("#message");
+        let invoice = document.querySelector("#invoice");
+        if ((message.value.length > 0) && (invoice.value.length > 0)) {
+            document.getElementById("webln").innerHTML = "Verify Message.";
+            const response = await webln.verifyMessage(invoice.value, message.value);
+            if (response.valid) {
+                console.log("Verified!");
+                message.value = message.value + " <= Verified!";
+            } else {
+                document.getElementById("webln").innerHTML = "Not Verified!";
+                console.log("Not Verified!");
+                message.value = message.value + " <= NOT!";
+            }
+        } else {
+            document.getElementById("webln").innerHTML = "No Message and/or Signature.";
+        }
+      }
+      catch(err) {
+        // Tell the user what went wrong
+        console.log(err.message);
+        document.getElementById("webln").innerHTML = err.message;
+    }
+};
+
+function testLN06() {
+    document.getElementById("webln").innerHTML = "TestLN06";
+    asyncLN06(null, null);
 };
